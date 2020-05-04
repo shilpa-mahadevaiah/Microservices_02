@@ -1,0 +1,38 @@
+version: '2'
+services:
+  server:
+    build: ./Expressapp
+    ports:
+      - "3000:3000"
+  account-service:
+    build: ./Microservices/Account
+    ports:
+      - "9777:9777"
+    depends_on:
+      - mongo1
+  cart-service:
+    build: ./Microservices/Cart
+    ports:
+      - "9111:9111"
+    depends_on:
+      - mongo2
+  catalog-service:
+    build: ./Microservices/Catalog  
+    ports:
+      - "9090:9090"
+  mongo1: # name of the third service
+    container_name: mongo1
+    image: mongo
+    ports:
+     - "27017:27017" # specify port forewarding 
+    volumes:
+      - ./data/db-mongo-1:/data/db 
+
+  mongo2: # name of the third service
+    container_name: mongo2
+    image: mongo
+    ports:
+     - "27017:27017" # specify port forewarding  
+    volumes:
+      - ./data/db-mongo-2:/data/db
+  
